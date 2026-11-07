@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Motion Lab — 70 hiệu ứng chuyển động</title>
+<meta name="description" content="Thư viện 70 hiệu ứng chuyển động dựng lại bằng canvas 2D: xem trực tiếp, chỉnh tham số, tua thời gian." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="#top">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-txt">MOTION<em>LAB</em></span>
+  </a>
+  <nav class="top-nav">
+    <a href="#thu-vien">Thư viện</a>
+    <a href="#nhom">Nhóm hiệu ứng</a>
+    <a href="#cach-dung">Cách dựng</a>
+  </nav>
+  <div class="top-meta"><span id="countBadge">70</span> hiệu ứng</div>
+</header>
+
+<main id="top">
+
+  <!-- ---------------------------------------------------------------- HERO -->
+  <section class="hero">
+    <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="eyebrow">Thư viện chuyển động · canvas 2D · không thư viện</p>
+      <h1>
+        <span class="l1">Bảy mươi</span>
+        <span class="l2">hiệu ứng</span>
+        <span class="l3">chuyển động</span>
+      </h1>
+      <p class="lede">
+        Dựng lại từ bộ template của <strong>animos.app</strong>: đọc đặc tả thật của 70 hiệu ứng,
+        viết lại bằng canvas 2D thuần. Mỗi hiệu ứng chạy thật, chỉnh được tham số, tua được thời gian.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#thu-vien">Mở thư viện <span aria-hidden="true">→</span></a>
+        <button class="btn btn-ghost" id="heroPlay" type="button">Xem toàn màn hình</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div><b>70</b><span>hiệu ứng</span></div>
+      <div><b>6</b><span>nhóm chuyển động</span></div>
+      <div><b>1</b><span>tệp engine</span></div>
+      <div><b>0</b><span>thư viện ngoài</span></div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------------- NHÓM -->
+  <section class="section groups" id="nhom">
+    <div class="section-head">
+      <h2>Sáu nhóm chuyển động</h2>
+      <p>Mỗi nhóm là một cách kể khác nhau: chiều sâu, nhịp trượt, lưới, mặt nạ, tiêu điểm, hay nhiều cảnh nối tiếp.</p>
+    </div>
+    <div class="group-grid" id="groupGrid"></div>
+  </section>
+
+  <!-- ------------------------------------------------------------- THƯ VIỆN -->
+  <section class="section library" id="thu-vien">
+    <div class="section-head">
+      <h2>Thư viện hiệu ứng</h2>
+      <p>Bấm vào một thẻ để mở trình xem: tham số, tua thời gian, chạy toàn màn hình. Ảnh trong các hiệu ứng là poster sinh tự động.</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="chips" id="chips" role="tablist" aria-label="Lọc theo nhóm"></div>
+      <label class="search">
+        <span class="sr-only">Tìm hiệu ứng</span>
+        <input id="search" type="search" placeholder="Tìm theo tên…" autocomplete="off" />
+      </label>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>Không có hiệu ứng nào khớp từ khoá.</p>
+  </section>
+
+  <!-- ------------------------------------------------------------ CÁCH DỰNG -->
+  <section class="section method" id="cach-dung">
+    <div class="section-head">
+      <h2>Cách dựng</h2>
+      <p>Không dùng GSAP, không ba.js, không video. Chỉ một canvas 2D và một vòng lặp thời gian.</p>
+    </div>
+    <div class="method-grid">
+      <article>
+        <span class="num">01</span>
+        <h3>Một trục thời gian</h3>
+        <p>Mỗi hiệu ứng nhận <code>t</code> từ 0 đến 1 rồi lặp. Mọi vị trí, góc, độ mờ đều là hàm của <code>t</code> — nhờ vậy chỉnh tốc độ, tua, hay dừng ở một khung đều dễ.</p>
+      </article>
+      <article>
+        <span class="num">02</span>
+        <h3>Ba hàm vẽ chính</h3>
+        <p><code>card()</code> vẽ ảnh phủ kín khung bo góc; <code>perspCard()</code> vẽ thẻ quay quanh trục dọc có phối cảnh thật; <code>arcCard()</code> uốn thẻ theo cung cho tường cong và quả cầu.</p>
+      </article>
+      <article>
+        <span class="num">03</span>
+        <h3>Nhịp và so le</h3>
+        <p><code>steps()</code> chia vòng lặp thành n cảnh; <code>stagger()</code> cho từng phần tử chạy lệch nhau; <code>back()</code> tạo độ nảy; <code>pulse()</code> tạo nhịp vào–giữ–ra.</p>
+      </article>
+      <article>
+        <span class="num">04</span>
+        <h3>Tham số có thật</h3>
+        <p>Mỗi hiệu ứng giữ bộ tham số lấy từ template gốc: cỡ thẻ, bán kính, độ nghiêng, hướng, nhịp. Chỉnh ở trình xem là thấy ngay thay đổi.</p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div>
+    <span class="brand-txt">MOTION<em>LAB</em></span>
+    <p>Mô phỏng lại 70 template chuyển động của <a href="https://animos.app/editor" target="_blank" rel="noopener">animos.app</a> bằng canvas 2D. Tên và tham số giữ theo bản gốc; mã vẽ viết lại.</p>
+  </div>
+  <div class="foot-right">
+    <p>Chạy trực tiếp từ tệp, không cần máy chủ.</p>
+    <p class="mono">70 effects · 6 groups · canvas 2D</p>
+  </div>
+</footer>
+
+<!-- ------------------------------------------------------------ TRÌNH XEM -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <header class="modal-top">
+      <div>
+        <p class="modal-kicker" id="mGroup">nhóm</p>
+        <h2 id="mTitle">Tên hiệu ứng</h2>
+      </div>
+      <div class="modal-actions">
+        <button class="icon-btn" id="mPrev" type="button" aria-label="Hiệu ứng trước">←</button>
+        <button class="icon-btn" id="mNext" type="button" aria-label="Hiệu ứng sau">→</button>
+        <button class="icon-btn" id="mClose" type="button" data-close aria-label="Đóng">✕</button>
+      </div>
+    </header>
+
+    <div class="modal-stage">
+      <canvas id="mCanvas"></canvas>
+      <div class="stage-tools">
+        <button class="icon-btn" id="mPlay" type="button" aria-label="Phát / tạm dừng">❚❚</button>
+        <input id="mScrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Tua thời gian" />
+        <span class="mono" id="mTime">0,00</span>
+        <button class="btn btn-ghost btn-sm" id="mFull" type="button">Toàn màn hình</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <p class="modal-desc" id="mDesc"></p>
+      <div class="params" id="mParams"></div>
+      <p class="modal-note mono" id="mMeta"></p>
+    </div>
+  </div>
+</div>
+
+<script src="js/lib.js"></script>
+<script src="js/effects/00-reference.js"></script>
+<script src="js/effects/10-3d.js"></script>
+<script src="js/effects/20-flow.js"></script>
+<script src="js/effects/30-stream.js"></script>
+<script src="js/effects/40-grid.js"></script>
+<script src="js/effects/50-stack.js"></script>
+<script src="js/effects/60-orbit.js"></script>
+<script src="js/effects/70-reveal.js"></script>
+<script src="js/effects/80-scene.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
